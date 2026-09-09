@@ -173,14 +173,14 @@ elif menu in ["Tech & AI Skills", "Skills Técnicas e IA"]:
 elif menu in ["Cognitive & Soft Skills", "Perfil Cognitivo & Soft Skills"]:
     if lang == "🇬🇧 EN":
         st.subheader("Cognitive & Operational Style")
-        st.write("A high-performance analytical perspective focused on complex problem-solving, ethical integrity, and adaptability.")
+        st.write("A high-performance analytical perspective focused on complex problem-solving, ethical integrity, and adaptability in dynamic data environments.")
         cat_soft = ['Systemic Thinking', 'Problem Solving', 'Immersive Hyperfocus', 'Integrity & Ethics', 'Empathy & Collaboration', 'Exponential Learning']
-        texts = ["Systemic Thinking: SSOT vision and 360º architecture", "Problem Solving: Pattern recognition", "Immersive Hyperfocus: High delivery rate", "Integrity & Ethics: Leadership by example", "Empathy & Collaboration: Trusted relationships", "Exponential Learning: Rapid tech absorption"]
+        texts = ["Systemic Thinking: SSOT vision and 360º conceptual architecture", "Problem Solving: Pattern recognition in complex data", "Immersive Hyperfocus: High delivery rate on high-value technical topics", "Integrity & Ethics: Leadership by example and strong team loyalty", "Empathy & Collaboration: Assertive communication and trusted relationships", "Exponential Learning: Rapid absorption of new technologies"]
     else:
         st.subheader("Perfil Cognitivo & Estilo Operacional")
-        st.write("Uma perspetiva analítica de alto desempenho focada na resolução de problemas complexos e integridade.")
+        st.write("Uma perspetiva analítica de alto desempenho focada na resolução de problemas complexos, integridade ética e adaptabilidade em ambientes de dados dinâmicos.")
         cat_soft = ['Pensamento Sistémico', 'Resolução de Problemas', 'Superfoco Imersivo', 'Integridade & Ética', 'Empatia & Colaboração', 'Aprendizagem Exponencial']
-        texts = ["Pensamento Sistémico: Visão SSOT", "Resolução de Problemas: Reconhecimento de padrões", "Superfoco Imersivo: Elevada taxa de entrega", "Integridade & Ética: Liderança pelo exemplo", "Empatia & Colaboração: Relações de confiança", "Aprendizagem Exponencial: Rápida absorção de tech"]
+        texts = ["Pensamento Sistémico: Visão SSOT e arquitetura conceptual 360º", "Resolução de Problemas: Reconhecimento de padrões em dados complexos", "Superfoco Imersivo: Elevada taxa de entrega em temas de alto valor técnico", "Integridade & Ética: Liderança pelo exemplo e forte lealdade à equipa", "Empatia & Colaboração: Comunicação assertiva e relações de confiança", "Aprendizagem Exponencial: Velocidade de absorção rápida de novas tecnologias"]
 
     col_radar_soft, col_skills_soft = st.columns([1.5, 1])
     with col_radar_soft:
@@ -193,3 +193,21 @@ elif menu in ["Cognitive & Soft Skills", "Perfil Cognitivo & Soft Skills"]:
         scores = [98, 95, 95, 100, 90, 95]
         for t, s in zip(texts, scores):
             st.progress(s, text=t)
+            
+    st.divider()
+    
+    col_style1, col_style2 = st.columns(2)
+    with col_style1:
+        if lang == "🇬🇧 EN":
+            st.markdown("#### ⚙️ Operational Dynamics (How I Work)")
+            st.markdown("* **Strategic Anchoring Phase:** Begins with rigorous mapping and structured questioning to ensure solid foundations.\n* **Multifocal Dynamism:** High performance when managing 2 to 3 simultaneous projects.\n* **Flow Protection:** Benefits from consolidated time blocks for complex context switching.")
+        else:
+            st.markdown("#### ⚙️ Dinâmica Operacional (Como Trabalho)")
+            st.markdown("* **Fase de Ancoragem Estratégica:** Início marcado por um mapeamento rigoroso e questionamento estruturado para garantir que as bases são sólidas.\n* **Dinamismo Multifocal:** Elevado desempenho ao gerir 2 a 3 projetos em simultâneo.\n* **Proteção do Fluxo:** Beneficia de blocos de tempo consolidados para transições de contexto complexas.")
+    with col_style2:
+        if lang == "🇬🇧 EN":
+            st.markdown("#### 🤝 Collaboration & Leadership")
+            st.markdown("* **Leadership by Example:** Authority earned through competence and moral integrity.\n* **High-Impact Selective Communication:** Conveys complex knowledge with enthusiasm and conceptual clarity.\n* **Growth Philosophy:** Aligned with the maxim that 'when one grows, everyone grows'.")
+        else:
+            st.markdown("#### 🤝 Colaboração & Liderança")
+            st.markdown("* **Liderança pelo Exemplo:** Autoridade conquistada através da competência e integridade moral.\n* **Comunicação Seletiva de Alto Impacto:** Transmite conhecimentos complexos com entusiasmo e clareza conceptual.\n* **Filosofia do Crescimento:** Alinhamento com a máxima de que 'onde um cresce, crescem todos'.")
