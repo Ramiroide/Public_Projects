@@ -22,7 +22,7 @@ h1, h2, h3 { color: #1e3d59; }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. BARRA LATERAL & SELETOR DE IDIOMA
+# 3. BARRA LATERAL, IDIOMA & BOTÃO DE PDF
 with st.sidebar:
     lang = st.radio("🌐 Language / Idioma", ["🇬🇧 EN", "🇵🇹 PT"])
     st.divider()
@@ -43,6 +43,23 @@ with st.sidebar:
         st.markdown("📱 **Tel:** (+351) 964470366")
         st.divider()
         st.info("💡 Abordagem cognitiva assente em pensamento sistémico, facilidade de síntese de ecossistemas complexos e resolução de problemas estruturais de dados.")
+        
+    st.divider()
+    
+    # --- LÓGICA DO BOTÃO DE DOWNLOAD DO PDF ---
+    try:
+        with open("CV_Diogo_Ramires.pdf", "rb") as pdf_file:
+            pdf_bytes = pdf_file.read()
+        
+        st.download_button(
+            label="📥 Download Full CV (PDF)" if lang == "🇬🇧 EN" else "📥 Descarregar CV (PDF)",
+            data=pdf_bytes,
+            file_name="CV_Diogo_Ramires.pdf",
+            mime="application/pdf",
+            use_container_width=True
+        )
+    except FileNotFoundError:
+        st.caption("📄 PDF CV upload pending..." if lang == "🇬🇧 EN" else "📄 PDF CV a aguardar upload...")
 
 # 4. CABEÇALHO PRINCIPAL
 if lang == "🇬🇧 EN":
@@ -150,7 +167,7 @@ elif menu in ["Startup MVPs & Arch", "Startup MVPs & Cloud"]:
         st.markdown("#### 📱 TripMillennium (React & Offline-First)\n* **Frontend:** Plataforma logística em React.js, TypeScript e Tailwind CSS.\n* **Edge Caching:** Consumo via Google Edge Network. Processamento local no browser (Offline-first).\n* **BLOB Storage:** Webhooks assíncronos para PDFs/Imagens alojados como Object Storage com injeção automática de URLs na DB.")
 
 elif menu in ["Tech & AI Skills", "Skills Técnicas e IA"]:
-    st.subheader("Hybrid Skillset (Tech, Data & CX)")
+    st.subheader("Hybrid Skillset (Tech, Data & CX)" if lang == "🇬🇧 EN" else "Conjunto de Skills Híbrido (Tech, Dados & CX)")
     col_radar, col_skills = st.columns([1.5, 1])
     with col_radar:
         categories = ['Advanced SQL / BigQuery', 'Cloud Run / AppSheet', 'React & TypeScript', 'Python, LLMs & RAG', 'BI & Analytics', 'CI/CD & FinOps']
@@ -164,7 +181,7 @@ elif menu in ["Tech & AI Skills", "Skills Técnicas e IA"]:
         st.progress(85, text="Frontend: React.js, TypeScript, Tailwind CSS")
         st.progress(90, text="AI/ML: Vertex AI, Gemini 1.5, RAG, Embeddings")
         st.progress(90, text="BI & Ops: Power BI, Looker Studio, CI/CD, Git")
-        st.markdown("#### 🎓 Education")
+        st.markdown("#### 🎓 Education" if lang == "🇬🇧 EN" else "#### 🎓 Educação")
         if lang == "🇬🇧 EN":
             st.markdown("- **PG Digital Enterprise Management** (Nova IMS)\n- **MSc Management - Thesis 18/20** (ISEG UL)\n- **BSc Political Science** (ISCSP UL)")
         else:
