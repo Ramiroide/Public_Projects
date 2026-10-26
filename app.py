@@ -1,5 +1,5 @@
 # ==============================================================================
-# DIOGO RAMIRES - EXECUTIVE PORTFOLIO & INTERACTIVE CV
+# DIOGO RAMIRES - EXECUTIVE PORTFOLIO & INTERACTIVE CV (HIGH-CONTRAST DARK UI)
 # ==============================================================================
 import streamlit as st
 import plotly.graph_objects as go
@@ -13,113 +13,131 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. SOPHISTICATED EDITORIAL CSS (NO AI CLICHÉS)
+# 2. HIGH-CONTRAST DARK EXECUTIVE CSS (LOCKED PALETTE - NO THEME CONFLICTS)
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-html, body, [class*="css"] {
+/* Force Dark Background & High-Clarity Text Globally */
+html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+    background-color: #0b0f19 !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #0f172a;
+    color: #e2e8f0 !important;
 }
 
-/* Main Headings */
+[data-testid="stHeader"] {
+    background-color: rgba(11, 15, 25, 0.85) !important;
+}
+
+/* Ensure all standard markdown paragraphs and lists are bright and readable */
+p, li, span, div {
+    color: #e2e8f0;
+}
+
+strong, b {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Main Headings - Pure White for Instant Readability */
 h1 {
     font-weight: 700 !important;
     letter-spacing: -0.03em !important;
-    color: #0f172a !important;
-    font-size: 2.2rem !important;
-    margin-bottom: 0.2rem !important;
+    color: #ffffff !important;
+    font-size: 2.25rem !important;
+    margin-bottom: 0.35rem !important;
 }
 h2, h3 {
     font-weight: 600 !important;
     letter-spacing: -0.02em !important;
-    color: #0f172a !important;
+    color: #f8fafc !important;
 }
 h4 {
     font-weight: 600 !important;
-    color: #1e293b !important;
-    margin-top: 1.2rem !important;
-    margin-bottom: 0.4rem !important;
+    color: #38bdf8 !important;
+    font-size: 1.15rem !important;
+    margin-top: 1.4rem !important;
+    margin-bottom: 0.6rem !important;
 }
 
-/* Subtle Subtitle */
+/* Hero Subtitle - High Contrast Light Slate */
 .hero-subtitle {
     font-size: 1.05rem;
-    color: #475569;
-    line-height: 1.6;
+    color: #cbd5e1 !important;
+    line-height: 1.65;
     margin-bottom: 1.8rem;
-    max-width: 900px;
+    max-width: 920px;
 }
 
-/* Executive KPI Cards */
+/* Executive KPI Cards - Dark Slate Surface */
 .kpi-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: #161f30;
+    border: 1px solid #283548;
     border-radius: 8px;
     padding: 18px 20px;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     height: 100%;
 }
 .kpi-label {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #64748b;
+    color: #94a3b8 !important;
     font-weight: 600;
 }
 .kpi-value {
-    font-size: 1.55rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #ffffff !important;
     margin: 6px 0 4px 0;
     letter-spacing: -0.02em;
 }
 .kpi-context {
     font-size: 0.8rem;
-    color: #0284c7;
+    color: #38bdf8 !important;
     font-weight: 500;
 }
 
-/* Role & Experience Cards */
+/* Role & Experience Headers */
 .role-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 6px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #283548;
+    padding-bottom: 8px;
+    margin-top: 24px;
+    margin-bottom: 12px;
 }
 .role-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #0f172a;
+    color: #ffffff !important;
 }
 .role-company {
-    color: #0284c7;
-    font-weight: 600;
+    color: #38bdf8 !important;
+    font-weight: 700;
+    font-size: 1.15rem;
 }
 .role-date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #64748b;
+    font-size: 0.82rem;
+    color: #94a3b8 !important;
 }
 
-/* Tech Stack Pills (Monkey See, Monkey Do for Recruiters) */
+/* Tech Stack Pills (High Visibility for Recruiters) */
 .tech-stack-bar {
-    margin-top: 8px;
-    margin-bottom: 18px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .tech-pill {
     display: inline-block;
-    background-color: #f1f5f9;
-    color: #334155;
-    border: 1px solid #cbd5e1;
+    background-color: #1e293b;
+    color: #e2e8f0 !important;
+    border: 1px solid #334155;
     border-radius: 4px;
-    padding: 3px 9px;
+    padding: 4px 10px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     margin-right: 6px;
     margin-bottom: 6px;
     font-weight: 500;
@@ -127,49 +145,56 @@ h4 {
 
 /* Content Box */
 .info-card {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-left: 3px solid #0f172a;
-    padding: 16px 20px;
+    background-color: #161f30;
+    border: 1px solid #283548;
+    border-left: 3px solid #38bdf8;
+    padding: 18px 20px;
     border-radius: 6px;
     margin-bottom: 16px;
 }
 .info-card-title {
     font-weight: 600;
-    font-size: 0.95rem;
-    color: #0f172a;
+    font-size: 0.98rem;
+    color: #ffffff !important;
     margin-bottom: 6px;
 }
 .info-card-body {
-    font-size: 0.88rem;
-    color: #475569;
-    line-height: 1.55;
+    font-size: 0.9rem;
+    color: #cbd5e1 !important;
+    line-height: 1.6;
 }
 
-/* Sidebar Styling */
+/* Sidebar Styling - Unified Dark Surface */
 [data-testid="stSidebar"] {
-    background-color: #f8fafc;
-    border-right: 1px solid #e2e8f0;
+    background-color: #111827 !important;
+    border-right: 1px solid #1f2937 !important;
+}
+[data-testid="stSidebar"] * {
+    color: #e2e8f0 !important;
 }
 .sidebar-name {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #ffffff !important;
     letter-spacing: -0.02em;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 .sidebar-role {
-    font-size: 0.82rem;
-    color: #0284c7;
+    font-size: 0.8rem;
+    color: #38bdf8 !important;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-bottom: 16px;
+    line-height: 1.4;
 }
 .sidebar-meta {
-    font-size: 0.84rem;
-    color: #475569;
-    line-height: 1.8;
+    font-size: 0.85rem;
+    color: #cbd5e1 !important;
+    line-height: 1.85;
+}
+hr {
+    border-color: #283548 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -194,7 +219,7 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
         st.divider()
-        st.caption("PROFILE SYNTHESIS")
+        st.markdown("**PROFILE SYNTHESIS**")
         st.write(
             "Analytical approach grounded in systemic thinking, translating complex legacy ecosystems "
             "into scalable data architectures and clear product specifications."
@@ -209,7 +234,7 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
         st.divider()
-        st.caption("SÍNTESE DE PERFIL")
+        st.markdown("**SÍNTESE DE PERFIL**")
         st.write(
             "Abordagem analítica assente em pensamento sistémico, traduzindo ecossistemas legados complexos "
             "em arquiteturas de dados escaláveis e especificações claras de produto."
@@ -273,18 +298,18 @@ menu = option_menu(
     default_index=0,
     orientation="horizontal",
     styles={
-        "container": {"padding": "4px", "background-color": "#f1f5f9", "border-radius": "8px"},
-        "icon": {"font-size": "14px", "color": "#475569"},
+        "container": {"padding": "5px", "background-color": "#161f30", "border": "1px solid #283548", "border-radius": "8px"},
+        "icon": {"font-size": "14px", "color": "#94a3b8"},
         "nav-link": {
             "font-size": "13.5px",
             "font-weight": "500",
             "text-align": "center",
             "margin": "0px 2px",
             "border-radius": "6px",
-            "color": "#334155",
-            "--hover-color": "#e2e8f0"
+            "color": "#cbd5e1",
+            "--hover-color": "#1e293b"
         },
-        "nav-link-selected": {"background-color": "#0f172a", "color": "#ffffff", "font-weight": "600"},
+        "nav-link-selected": {"background-color": "#0284c7", "color": "#ffffff", "font-weight": "600"},
     }
 )
 
@@ -635,16 +660,17 @@ elif menu in ["Technical Stack", "Stack Tecnológico"]:
             r=[5.0, 4.8, 5.0, 4.5, 4.5, 4.0],
             theta=categories,
             fill='toself',
-            fillcolor='rgba(2, 132, 199, 0.15)',
-            line=dict(color='#0f172a', width=2)
+            fillcolor='rgba(56, 189, 248, 0.2)',
+            line=dict(color='#38bdf8', width=2)
         ))
         fig.update_layout(
             polar=dict(
-                radialaxis=dict(visible=True, range=[0, 5], tickfont=dict(size=10, color='#64748b')),
-                angularaxis=dict(tickfont=dict(size=11, color='#0f172a'))
+                bgcolor='rgba(22, 31, 48, 0.6)',
+                radialaxis=dict(visible=True, range=[0, 5], gridcolor='#283548', tickfont=dict(size=10, color='#94a3b8')),
+                angularaxis=dict(gridcolor='#283548', tickfont=dict(size=11, color='#e2e8f0'))
             ),
             showlegend=False,
-            margin=dict(t=30, b=30, l=40, r=40),
+            margin=dict(t=30, b=30, l=45, r=45),
             height=320,
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)"
