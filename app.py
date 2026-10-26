@@ -1,230 +1,753 @@
 # ==============================================================================
-# INTERACTIVE CV DIOGO RAMIRES - MULTI-LANGUAGE (EN/PT) FULL-STACK
+# DIOGO RAMIRES - EXECUTIVE PORTFOLIO & INTERACTIVE CV
 # ==============================================================================
 import streamlit as st
-import pandas as pd
 import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
 
-# 1. CONFIGURAÇÃO DA PÁGINA
+# 1. PAGE CONFIGURATION
 st.set_page_config(
-    page_title="Diogo Ramires | Interactive CV",
-    page_icon="🧊",
+    page_title="Diogo Ramires | Technical Business Analyst & Data Architect",
+    page_icon="◆",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 2. DESIGN (Custom CSS)
+# 2. SOPHISTICATED EDITORIAL CSS (NO AI CLICHÉS)
 st.markdown("""
 <style>
-.metric-container { background-color: #f0f2f6; padding: 15px; border-radius: 10px; }
-h1, h2, h3 { color: #1e3d59; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #0f172a;
+}
+
+/* Main Headings */
+h1 {
+    font-weight: 700 !important;
+    letter-spacing: -0.03em !important;
+    color: #0f172a !important;
+    font-size: 2.2rem !important;
+    margin-bottom: 0.2rem !important;
+}
+h2, h3 {
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+    color: #0f172a !important;
+}
+h4 {
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    margin-top: 1.2rem !important;
+    margin-bottom: 0.4rem !important;
+}
+
+/* Subtle Subtitle */
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+    max-width: 900px;
+}
+
+/* Executive KPI Cards */
+.kpi-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    height: 100%;
+}
+.kpi-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    font-weight: 600;
+}
+.kpi-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 6px 0 4px 0;
+    letter-spacing: -0.02em;
+}
+.kpi-context {
+    font-size: 0.8rem;
+    color: #0284c7;
+    font-weight: 500;
+}
+
+/* Role & Experience Cards */
+.role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.role-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+.role-company {
+    color: #0284c7;
+    font-weight: 600;
+}
+.role-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* Tech Stack Pills (Monkey See, Monkey Do for Recruiters) */
+.tech-stack-bar {
+    margin-top: 8px;
+    margin-bottom: 18px;
+}
+.tech-pill {
+    display: inline-block;
+    background-color: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 3px 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+/* Content Box */
+.info-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #0f172a;
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+.info-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+.info-card-body {
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.55;
+}
+
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+.sidebar-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+}
+.sidebar-role {
+    font-size: 0.82rem;
+    color: #0284c7;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+}
+.sidebar-meta {
+    font-size: 0.84rem;
+    color: #475569;
+    line-height: 1.8;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# 3. BARRA LATERAL, IDIOMA & BOTÃO DE PDF
+def render_pills(items):
+    pills_html = "".join([f'<span class="tech-pill">{item}</span>' for item in items])
+    st.markdown(f'<div class="tech-stack-bar">{pills_html}</div>', unsafe_allow_html=True)
+
+# 3. SIDEBAR
 with st.sidebar:
-    lang = st.radio("🌐 Language / Idioma", ["🇬🇧 EN", "🇵🇹 PT"])
+    lang = st.radio("Language / Idioma", ["EN", "PT"], horizontal=True)
     st.divider()
     
-    st.markdown("### 👨‍💻 Diogo Ramires")
-    st.caption("Lead Analytics Engineer | AI Solutions Architect")
-    st.divider()
-    
-    if lang == "🇬🇧 EN":
-        st.markdown("📍 **Location:** Costa de Caparica, PT")
-        st.markdown("✉️ **Email:** dbramires@gmail.com")
-        st.markdown("📱 **Phone:** (+351) 964470366")
+    st.markdown('<div class="sidebar-name">Diogo Ramires</div>', unsafe_allow_html=True)
+    if lang == "EN":
+        st.markdown('<div class="sidebar-role">Technical Business Analyst & Data Solutions Architect</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="sidebar-meta">
+        <strong>Location:</strong> Costa da Caparica, Lisbon<br>
+        <strong>Email:</strong> dbramires@gmail.com<br>
+        <strong>Phone:</strong> (+351) 964 470 366
+        </div>
+        """, unsafe_allow_html=True)
         st.divider()
-        st.info("💡 Cognitive approach built on systemic thinking, synthesis of complex ecosystems, and structural data problem-solving.")
-    else:
-        st.markdown("📍 **Local:** Costa de Caparica, PT")
-        st.markdown("✉️ **Email:** dbramires@gmail.com")
-        st.markdown("📱 **Tel:** (+351) 964470366")
-        st.divider()
-        st.info("💡 Abordagem cognitiva assente em pensamento sistémico, facilidade de síntese de ecossistemas complexos e resolução de problemas estruturais de dados.")
-        
-    st.divider()
-    
-    # --- LÓGICA DO BOTÃO DE DOWNLOAD DO PDF ---
-    try:
-        with open("CV_Diogo_Ramires.pdf", "rb") as pdf_file:
-            pdf_bytes = pdf_file.read()
-        
-        st.download_button(
-            label="📥 Download Full CV (PDF)" if lang == "🇬🇧 EN" else "📥 Descarregar CV (PDF)",
-            data=pdf_bytes,
-            file_name="CV_Diogo_Ramires.pdf",
-            mime="application/pdf",
-            use_container_width=True
+        st.caption("PROFILE SYNTHESIS")
+        st.write(
+            "Analytical approach grounded in systemic thinking, translating complex legacy ecosystems "
+            "into scalable data architectures and clear product specifications."
         )
-    except FileNotFoundError:
-        st.caption("📄 PDF CV upload pending..." if lang == "🇬🇧 EN" else "📄 PDF CV a aguardar upload...")
+    else:
+        st.markdown('<div class="sidebar-role">Technical Business Analyst & Arquiteto de Dados</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="sidebar-meta">
+        <strong>Localização:</strong> Costa da Caparica, Lisboa<br>
+        <strong>Email:</strong> dbramires@gmail.com<br>
+        <strong>Telefone:</strong> (+351) 964 470 366
+        </div>
+        """, unsafe_allow_html=True)
+        st.divider()
+        st.caption("SÍNTESE DE PERFIL")
+        st.write(
+            "Abordagem analítica assente em pensamento sistémico, traduzindo ecossistemas legados complexos "
+            "em arquiteturas de dados escaláveis e especificações claras de produto."
+        )
 
-# 4. CABEÇALHO PRINCIPAL
-if lang == "🇬🇧 EN":
-    st.title("Bridging Complex Data Architecture with CX Strategy")
-    st.markdown("*Data Translator and Architect with 15+ years of experience. I transform legacy ecosystems into Single Sources of Truth and connect analytical infrastructure to financial and customer impact.*")
+# 4. HERO SECTION
+if lang == "EN":
+    st.title("Bridging Data Architecture with Product & Business Strategy")
+    st.markdown(
+        '<div class="hero-subtitle">'
+        'With 15+ years across banking/financial operations, enterprise analytics, and customer experience, '
+        'I translate business, regulatory, and user needs into scalable technical solutions, Single Sources of Truth (SSOT), '
+        'and measurable P&L impact.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+    kpis = [
+        ("Transaction Scale", "€70M+ / yr", "Regulated Pharma & Banking Ecosystems"),
+        ("ETL Refactoring", "24h → 15m", "75% Reduction in Maintenance Effort"),
+        ("Omnichannel SLA", "<9% → >90%", "Enabled via SSOT & Workflow Design"),
+        ("Enterprise Adoption", "400+ Users", "Daily Active Power BI & SAP Data Marts"),
+    ]
+    nav_options = ["Executive Summary", "Corporate Experience", "Cloud & SaaS Projects", "Technical Stack", "Operational Style"]
 else:
-    st.title("A Ligar Arquitetura de Dados Complexa à Estratégia de CX")
-    st.markdown("*Data Translator e Arquiteto com 15+ anos de experiência. Transformo ecossistemas legados em Single Sources of Truth e ligo a infraestrutura analítica ao impacto financeiro e ao cliente.*")
+    st.title("Arquitetura de Dados Alinhada à Estratégia de Produto e Negócio")
+    st.markdown(
+        '<div class="hero-subtitle">'
+        'Com mais de 15 anos de experiência em operações bancárias/financeiras, dados empresariais e Customer Experience, '
+        'traduzo necessidades de negócio, regulatórias e de utilizador em soluções técnicas escaláveis, Single Sources of Truth (SSOT) '
+        'e impacto direto no P&L.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+    kpis = [
+        ("Escala Transacional", "€70M+ / ano", "Ecossistemas Regulados (Banca & Farma)"),
+        ("Refactoring ETL", "24h → 15m", "Redução de 75% em Esforço de Manutenção"),
+        ("SLA Omnichannel", "<9% → >90%", "Viabilizado via SSOT & Desenho de Workflows"),
+        ("Adoção Corporativa", "400+ Users", "Utilizadores Diários em Data Marts SSOT"),
+    ]
+    nav_options = ["Resumo Executivo", "Experiência Corporativa", "Projetos Cloud & SaaS", "Stack Tecnológico", "Estilo Operacional"]
 
-# 5. KPIs EXECUTIVOS
-if lang == "🇬🇧 EN":
-    st.markdown("### 🚀 Key Impact Metrics")
-    m_sla, m_csat, m_etl, m_cost = "Omnichannel SLA", "Customer Satisfaction", "ETL Processing", "Infrastructure Cost"
-    m_sla_desc, m_csat_desc, m_etl_desc, m_cost_desc = "IKEA Service Level", "CSAT Growth", "BringGlobal (Pharma)", "Serverless MVPs Cloud"
-else:
-    st.markdown("### 🚀 Key Impact Metrics")
-    m_sla, m_csat, m_etl, m_cost = "SLA Omnichannel", "Satisfação do Cliente", "Processamento ETL", "Custo de Infraestrutura"
-    m_sla_desc, m_csat_desc, m_etl_desc, m_cost_desc = "Nível de Serviço IKEA", "Crescimento CSAT", "BringGlobal (Pharma)", "Cloud Serverless (MVPs)"
+# 5. KPI CARDS
+cols = st.columns(4)
+for col, (label, val, ctx) in zip(cols, kpis):
+    with col:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-label">{label}</div>
+            <div class="kpi-value">{val}</div>
+            <div class="kpi-context">{ctx}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-col1, col2, col3, col4 = st.columns(4)
-col1.metric(m_sla, "<9% ➔ +90%", m_sla_desc)
-col2.metric(m_csat, "35 ➔ 85", m_csat_desc)
-col3.metric(m_etl, "24h ➔ 15m", m_etl_desc)
-col4.metric(m_cost, "$0/mês", m_cost_desc)
-
-st.divider()
-
-# 6. MENU DE NAVEGAÇÃO
 st.write("")
-if lang == "🇬🇧 EN":
-    menu_options = ["Executive Summary", "Career Journey", "Startup MVPs & Arch", "Tech & AI Skills", "Cognitive & Soft Skills"]
-else:
-    menu_options = ["Resumo Executivo", "Percurso Profissional", "Startup MVPs & Cloud", "Skills Técnicas e IA", "Perfil Cognitivo & Soft Skills"]
 
+# 6. NAVIGATION MENU
 menu = option_menu(
     menu_title=None,
-    options=menu_options,
-    icons=["person-vcard", "rocket", "box-seam", "cpu", "brain"],
+    options=nav_options,
+    icons=["file-earmark-text", "building", "layers", "terminal", "sliders"],
     default_index=0,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0!important", "border-radius": "10px"},
-        "icon": {"font-size": "16px"},
-        "nav-link": {"font-size": "14px", "text-align": "center", "margin":"0px", "--hover-color": "rgba(30, 61, 89, 0.1)"},
-        "nav-link-selected": {"background-color": "#1e3d59", "color": "white"},
+        "container": {"padding": "4px", "background-color": "#f1f5f9", "border-radius": "8px"},
+        "icon": {"font-size": "14px", "color": "#475569"},
+        "nav-link": {
+            "font-size": "13.5px",
+            "font-weight": "500",
+            "text-align": "center",
+            "margin": "0px 2px",
+            "border-radius": "6px",
+            "color": "#334155",
+            "--hover-color": "#e2e8f0"
+        },
+        "nav-link-selected": {"background-color": "#0f172a", "color": "#ffffff", "font-weight": "600"},
     }
 )
 
-st.divider()
+st.write("")
 
-# ================= SEÇÕES DE CONTEÚDO =================
-
+# ==============================================================================
+# TAB 1: EXECUTIVE SUMMARY
+# ==============================================================================
 if menu in ["Executive Summary", "Resumo Executivo"]:
-    if lang == "🇬🇧 EN":
-        st.subheader("The Professional Profile")
-        st.write("I operate at the intersection of Data Engineering (Cloud/ETL) and C-Level Strategy (CX/Operations). My career is defined by deep technical modernizations (Legacy ➔ Cloud), mathematical modeling for decision support, and Change Management leadership that democratizes data access.")
-        st.markdown("#### Core Value Proposition:")
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.markdown("* **Engineering & Architecture (SSOT):** Expert in refactoring legacy systems (SQL/PostgreSQL), migrating to Microsoft Fabric/Azure, and creating Data Marts that eradicate operational silos.\n* **CX & Business Partnering:** Translating data into business decisions. Track record of managing insights that influenced 10-20% of a national operation generating €1.5M/day.")
-        with col_b:
-            st.markdown("* **Full-Stack & Cloud Serverless:** Mastery of the MS ecosystem (Power BI, Fabric), recent expansion into GCP (BigQuery, Cloud Run, Vertex AI) and Frontend development (React, TypeScript).\n* **Advanced Analytics & AI:** Predictive modeling and LLM integration (Gemini, Vertex AI). Specialist in RAG pipelines and semantic normalization via Vector Embeddings.")
+    if lang == "EN":
+        st.markdown("#### Core Value Proposition")
+        st.write(
+            "I operate at the intersection of Data Engineering (Cloud/ETL) and Product/Business Analysis. "
+            "Unlike purely functional analysts or isolated backend engineers, I audit legacy business logic directly in SQL, "
+            "define functional requirements with stakeholders, and architect the underlying data models and APIs."
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">Business Analysis & Product Delivery</div>
+                <div class="info-card-body">
+                Translation of business, regulatory, and operational bottlenecks into clear functional specifications, 
+                User Stories, As-Is/To-Be workflows, and Acceptance Criteria. Proven track record in Backlog Refinement, 
+                UAT, data reconciliation, and cross-functional alignment across Engineering, Product, and C-Level teams.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Enterprise Data Architecture (SSOT)</div>
+                <div class="info-card-body">
+                Specialist in refactoring high-volume legacy systems (SQL/PostgreSQL), preparing migration roadmaps to 
+                Microsoft Fabric/Azure, and designing centralized Data Marts that eliminate departmental silos ("Excel Hell").
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">CX Operations & Financial Impact</div>
+                <div class="info-card-body">
+                Integration of contact center telemetry (Genesys, Avaya) with core ERP/billing systems (SAP, OCP). 
+                Application of Cost-to-Serve and root-cause analysis (including SEM modeling) to connect operational 
+                performance directly to national P&L margins.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Modern Cloud, APIs & Applied AI</div>
+                <div class="info-card-body">
+                Hands-on architecture across GCP (BigQuery, Cloud Run, Cloud Build), REST APIs, Webhooks, and React/TypeScript. 
+                Pragmatic implementation of RAG pipelines and LLM validation (Vertex AI/Gemini) focused on data integrity and ROI.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     else:
-        st.subheader("O Perfil Profissional")
-        st.write("Atuo na interseção entre a Engenharia de Dados (Cloud/ETL) e a Estratégia C-Level (CX/Operações). A minha carreira é marcada por modernizações técnicas profundas (Legacy ➔ Cloud), criação de modelação matemática para suporte à decisão, e liderança de Change Management que democratiza o acesso aos dados.")
-        st.markdown("#### Core Value Proposition:")
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.markdown("* **Engenharia & Arquitetura (SSOT):** Especialista em Refactoring de sistemas legados (SQL/PostgreSQL), migração para MS Fabric/Azure, e criação de Data Marts que erradicam silos operacionais.\n* **CX & Business Partnering:** Tradução de dados em decisões de negócio. Histórico na gestão de insights que influenciaram 10-20% de uma operação nacional com faturação de 1.5M€/dia.")
-        with col_b:
-            st.markdown("* **Full-Stack & Cloud Serverless:** Domínio do ecossistema Microsoft, expansão recente para GCP (BigQuery, Cloud Run, Vertex AI) e desenvolvimento Frontend (React, TypeScript).\n* **Advanced Analytics & IA:** Modelação preditiva e integração de LLMs. Especialista em RAG e normalização semântica via Vector Embeddings (Cosine Similarity).")
+        st.markdown("#### Proposta de Valor Central")
+        st.write(
+            "Atuo na interseção entre a Engenharia de Dados (Cloud/ETL) e a Análise de Negócio e Produto. "
+            "Ao contrário de analistas puramente funcionais ou engenheiros isolados do negócio, audito a lógica legada diretamente em SQL, "
+            "defino os requisitos funcionais com os stakeholders e desenho a arquitetura de dados e APIs que suporta o produto."
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">Business Analysis & Entrega de Produto</div>
+                <div class="info-card-body">
+                Tradução de estrangulamentos operacionais, de negócio e regulatórios em especificações funcionais claras, 
+                User Stories, mapeamento de processos As-Is/To-Be e Critérios de Aceitação. Experiência sólida em Backlog Refinement, 
+                UAT, reconciliação de dados e alinhamento entre Engenharia, Produto e C-Level.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Arquitetura de Dados Empresarial (SSOT)</div>
+                <div class="info-card-body">
+                Especialista em refactoring de sistemas legados de elevado volume (SQL/PostgreSQL), preparação de roadmaps 
+                de migração para Microsoft Fabric/Azure e criação de Data Marts centralizados que erradicam silos operacionais.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">Operações CX & Impacto no P&L</div>
+                <div class="info-card-body">
+                Integração de telemetria de contact center (Genesys, Avaya) com sistemas core de faturação/ERP (SAP, OCP). 
+                Aplicação de análises Cost-to-Serve e root-cause analysis (incluindo modelação SEM) para ligar a qualidade 
+                operacional às margens financeiras.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Cloud Moderna, APIs & IA Aplicada</div>
+                <div class="info-card-body">
+                Arquitetura prática em GCP (BigQuery, Cloud Run, Cloud Build), REST APIs, Webhooks e React/TypeScript. 
+                Implementação pragmática de pipelines RAG e validação por LLMs (Vertex AI/Gemini) focada em integridade de dados e ROI.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
-elif menu in ["Career Journey", "Percurso Profissional"]:
-    if lang == "🇬🇧 EN":
-        st.subheader("Professional Journey & Impact")
-        st.markdown("#### **BringGlobal** | Senior BI & Data Engineer *(2022 - 2026)*")
-        st.markdown("* **Pharmaceutical Turnaround:** Led the architectural rebuild of a collapsing system. Refactored +5000 lines of SQL routines and reduced tables by 50%. Cut ETL times from 24h to 15 minutes, saving >€100k/year.\n* **Telecommunications (McKinsey):** Unblocked the delivery of complex models in Apache Superset within weeks, leveraging B2B expansion.\n* **Banking Big Data:** Mapped massive banking ecosystems using Erwin Data Modeler, PySpark, and MATLAB.")
-        st.markdown("---")
-        st.markdown("#### **IKEA** | Customer Insights Lead & Data Architect *(2014 - 2022)*")
-        st.markdown("* **Global Frameworks & KPIs:** Led the development of PIs/KPIs that inspired the Global Performance framework (VoC).\n* **SSOT & Change Management:** Replaced 'Excel Hell' with a Single Source of Truth via Data Marts, reducing sales errors (30% ➔ <7%) and logistical costs.\n* **Omnichannel Automation:** Integrated Avaya/Genesys telemetry. Developed automations saving 20 headcounts, supporting the SLA jump from <9% to >90%.\n* **C-Level Modeling & AI:** Used NLP (Brandwatch) to quantify CSAT and applied Structural Equation Modeling (SEM) to link CX to financial results.")
-        st.markdown("---")
-        st.markdown("#### **Early Career & B2B Foundation** | Banco BPI & Central de Cervejas *(Up to 2014)*")
-        st.markdown("* **Sales & CX Operations:** Managed B2B portfolios and frontline financial customer service. This forged the vision that guides my engineering today: technology must solve real business pain points.")
+# ==============================================================================
+# TAB 2: CORPORATE EXPERIENCE (PRIORITIZED)
+# ==============================================================================
+elif menu in ["Corporate Experience", "Experiência Corporativa"]:
+    if lang == "EN":
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">BringGlobal</span> &nbsp;|&nbsp; <span class="role-title">Senior BI & Data Engineer / Technical Business Analyst</span></div>
+            <div class="role-date">2022 – 2025 | Lisbon, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **Regulated & High-Volume Ecosystems:** Mapped and optimized banking and pharmaceutical data ecosystems supporting 85+ retail pharmacies, laboratory integrations, and over €70M in annual transaction volume, ensuring strict compliance and data reconciliation.
+        * **Requirement Translation & System Refactoring:** Audited legacy business logic and operational bottlenecks, translating business needs into functional and technical specifications. Led the architectural rebuild (refactoring 5,000+ lines of SQL and reducing database tables by 50%) while preparing the migration roadmap to Microsoft Fabric.
+        * **Operational & Financial Impact:** Cut critical ETL processing times from 24 hours to 15 minutes and reduced architectural maintenance effort by 75% (from ~1,600h to ~400h/year), securing a €100k+/year contract and restoring reporting reliability for the CFO.
+        * **Cross-Functional Delivery (McKinsey):** Acted as the bridge between McKinsey strategy consultants and engineering teams to clarify requirements, unblock data dependencies, and deliver complex analytical models in Apache Superset within weeks for B2B telecom expansion.
+        """)
+        render_pills(["Advanced SQL", "PostgreSQL", "Microsoft Fabric", "Azure Data Factory", "Power BI", "Apache Superset", "PySpark", "Erwin Data Modeler", "Agile/Scrum"])
+
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">IKEA</span> &nbsp;|&nbsp; <span class="role-title">Customer Insights Lead & Business Data Architect</span></div>
+            <div class="role-date">2014 – 2022 | Lisbon, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **User Insights & Product Analytics:** Led the design of Voice of Customer (VoC) KPIs that informed the Global Performance framework. Analyzed customer feedback and user behavior (via NLP/Brandwatch and web telemetry) to identify operational pain points and structure the frontline Knowledge Base.
+        * **Cross-System Integration & SSOT:** Eliminated departmental silos ("Excel Hell") by integrating contact center telemetry (Avaya, Genesys) with core ERP/billing systems (SAP, OCP) into centralized Power BI Data Marts serving 400+ daily users.
+        * **Workflow Optimization & Operational Support:** Defined functional workflows, monitoring tools, and system requirements that enabled operational and sales teams to reduce sales errors from 30% to <7%, cut logistics costs by 20–30%, and increase Omnichannel SLA performance from <9% to >90%.
+        * **Change Management & Executive Alignment:** Maintained functional documentation, led user onboarding and training across operations, and partnered with executive leadership using Cost-to-Serve and root-cause analysis (including SEM modeling) to link operational quality to national P&L margins.
+        """)
+        render_pills(["Power BI", "SQL", "SAP", "OCP", "Genesys", "Avaya", "Brandwatch (NLP)", "Data Marts (SSOT)", "Process Mapping"])
+
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">Banco BPI & Central de Cervejas</span> &nbsp;|&nbsp; <span class="role-title">Sales & CX Operations Analyst</span></div>
+            <div class="role-date">Up to 2014 | Portugal</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **Banking & Commercial Foundation:** Managed B2B portfolios and frontline banking customer service at Banco BPI, building a strong foundation in financial products, credit/commercial workflows, and translating end-user pain points into reporting requirements.
+        """)
+        render_pills(["Banking Operations", "Credit Workflows", "B2B Portfolio Management", "CRM", "Operational Reporting"])
+
     else:
-        st.subheader("Percurso Profissional & Impacto")
-        st.markdown("#### **BringGlobal** | Senior BI & Data Engineer *(2022 - 2026)*")
-        st.markdown("* **Turnaround Farmacêutico:** Reconstrução de um sistema em rutura. Refatorou rotinas SQL de +5000 linhas. Baixou tempos de ETL de 24h para 15 minutos, poupando >100k€/ano.\n* **Telecomunicações (McKinsey):** Desbloqueou em semanas a entrega de modelos em Apache Superset, alavancando expansão B2B.\n* **Arquitetura Banca:** Integração de ecossistemas massivos utilizando Erwin Data Modeler e PySpark.")
-        st.markdown("---")
-        st.markdown("#### **IKEA** | Customer Insights Lead & Data Architect *(2014 - 2022)*")
-        st.markdown("* **Global Frameworks:** Liderou o desenvolvimento de KPIs que inspiraram a framework Global de Performance (VoC).\n* **SSOT:** Substituiu o 'Excel Hell' por Data Marts (SSOT), reduzindo erros de vendas (30% ➔ <7%) e custos logísticos.\n* **Automação Omnichannel:** Integrou telemetria Avaya/Genesys. Automações pouparam 20 headcounts e alavancaram o SLA de <9% para >90%.\n* **Modelação & AI:** NLP (Brandwatch) para CSAT e Modelação de Equações Estruturais (SEM) para ligar operações a finanças.")
-        st.markdown("---")
-        st.markdown("#### **Early Career & B2B Foundation** | Banco BPI & Central de Cervejas *(Até 2014)*")
-        st.markdown("* **Vendas & Operações CX:** Linha da frente comercial e B2B. Forjou a visão de que a tecnologia é o meio para resolver a dor real do negócio.")
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">BringGlobal</span> &nbsp;|&nbsp; <span class="role-title">Senior BI & Data Engineer / Technical Business Analyst</span></div>
+            <div class="role-date">2022 – 2025 | Lisboa, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **Ecossistemas Regulados de Elevado Volume:** Mapeou e otimizou ecossistemas de dados bancários e farmacêuticos suportando +85 farmácias, integrações laboratoriais e mais de 70M€ em volume transacional anual, garantindo compliance e reconciliação financeira.
+        * **Tradução de Requisitos & Refactoring:** Auditou lógica de negócio legada e estrangulamentos operacionais, traduzindo necessidades em especificações funcionais e técnicas. Liderou a reconstrução arquitetural (+5.000 linhas de SQL refatoradas e redução de 50% nas tabelas) e preparou o roadmap para Microsoft Fabric.
+        * **Impacto Operacional e Financeiro:** Reduziu o processamento ETL crítico de 24 horas para 15 minutos e cortou o esforço de manutenção arquitetural em 75% (de ~1.600h para ~400h/ano), assegurando um contrato de >100k€/ano e devolvendo fiabilidade ao CFO.
+        * **Entrega Cross-Functional (McKinsey):** Atuou como ponte entre consultores da McKinsey e equipas de engenharia para clarificar requisitos, desbloquear dependências e entregar modelos analíticos em Apache Superset em semanas para expansão B2B em telecomunicações.
+        """)
+        render_pills(["Advanced SQL", "PostgreSQL", "Microsoft Fabric", "Azure Data Factory", "Power BI", "Apache Superset", "PySpark", "Erwin Data Modeler", "Agile/Scrum"])
 
-elif menu in ["Startup MVPs & Arch", "Startup MVPs & Cloud"]:
-    if lang == "🇬🇧 EN":
-        st.subheader("Independent Solutions Architect | Startup MVPs (2025 - Present)")
-        st.markdown("#### 🏛️ Polanyi Lakehouse (Architecture & CI/CD)\n* **Medallion Architecture:** Data Lakehouse in BigQuery (Bronze, Silver, Gold) for socioeconomic data.\n* **CI/CD & FinOps:** Automated pipelines via Cloud Build and GitHub with cost auditing.\n* **Data Science (SEM):** Quantitative modeling normalizing indicators via Z-scores for GIS rendering.")
-        st.markdown("#### 🧠 Inventory & Nutrition (Hybrid AI & NLP)\n* **Serverless GCP:** Microservices on Cloud Run triggered by webhooks.\n* **NLP & Vector Embeddings:** Replaced VLOOKUPs with Hybrid AI (Gemini 1.5 + Cosine Similarity) for semantic normalization.\n* **Trust Funnel:** LLM acts as an arbiter to protect relational database integrity.")
-        st.markdown("#### 📱 TripMillennium (React & Offline-First)\n* **Frontend:** Modular logistics platform in React.js, TypeScript, and Tailwind CSS.\n* **Edge Caching:** Asynchronous database consumption via Google Edge Network (PapaParse) mitigating API limits.\n* **BLOB Storage:** Webhooks for decoding base64 payloads to Object Storage (Google Drive).")
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">IKEA</span> &nbsp;|&nbsp; <span class="role-title">Customer Insights Lead & Business Data Architect</span></div>
+            <div class="role-date">2014 – 2022 | Lisboa, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **User Insights & Product Analytics:** Liderou o desenho de KPIs de Voice of Customer (VoC) que informaram a framework Global de Performance. Analisou feedback e comportamento do utilizador (via NLP/Brandwatch e telemetria web) para identificar pontos de fricção e estruturar a Knowledge Base da operação.
+        * **Integração de Sistemas & SSOT:** Eliminou silos departamentais ("Excel Hell") integrando telemetria de contact center (Avaya, Genesys) com sistemas ERP/faturação (SAP, OCP) em Data Marts centralizados em Power BI utilizados diariamente por 400+ colaboradores.
+        * **Otimização de Workflows & Suporte Operacional:** Definiu workflows funcionais, ferramentas de monitorização e requisitos que permitiram às equipas operacionais e comerciais reduzir erros de vendas de 30% para <7%, cortar custos logísticos em 20–30% e elevar o SLA Omnichannel de <9% para >90%.
+        * **Change Management & Alinhamento Executivo:** Manteve documentação funcional, liderou o onboarding de utilizadores e apoiou a direção executiva com análises Cost-to-Serve e root-cause analysis (incluindo modelação SEM) ligando qualidade operacional às margens do P&L.
+        """)
+        render_pills(["Power BI", "SQL", "SAP", "OCP", "Genesys", "Avaya", "Brandwatch (NLP)", "Data Marts (SSOT)", "Process Mapping"])
+
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">Banco BPI & Central de Cervejas</span> &nbsp;|&nbsp; <span class="role-title">Sales & CX Operations Analyst</span></div>
+            <div class="role-date">Até 2014 | Portugal</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        * **Fundação Bancária e Comercial:** Gestão de carteiras B2B e atendimento bancário na linha da frente no Banco BPI, consolidando domínio sobre produtos financeiros, fluxos comerciais/crédito e tradução de dores do utilizador em requisitos de reporting.
+        """)
+        render_pills(["Operações Bancárias", "Fluxos de Crédito", "Gestão B2B", "CRM", "Reporting Operacional"])
+
+# ==============================================================================
+# TAB 3: CLOUD & SAAS PROJECTS (MVPs)
+# ==============================================================================
+elif menu in ["Cloud & SaaS Projects", "Projetos Cloud & SaaS"]:
+    if lang == "EN":
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">Independent Product & Data Consultant</span> &nbsp;|&nbsp; <span class="role-title">Technical BA & Solutions Architect (SaaS MVPs)</span></div>
+            <div class="role-date">2025 – Present | Lisbon, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.write(
+            "End-to-end product specification and cloud architecture across four functional MVPs, "
+            "translating operational bottlenecks into User Stories, Acceptance Criteria, serverless microservices, and automated data pipelines."
+        )
+
+        col_p1, col_p2 = st.columns(2)
+        with col_p1:
+            st.markdown("#### Polanyi Lakehouse — Medallion Architecture & CI/CD")
+            st.markdown("""
+            * **Architecture:** Physical Data Lakehouse in Google BigQuery (Bronze, Silver, Gold layers) centralizing socioeconomic datasets (Eurostat/World Bank) processed via Python.
+            * **CI/CD & FinOps:** Automated deployment pipelines via Google Cloud Build triggered by GitHub webhooks, incorporating Data Quality tests and compute cost auditing.
+            * **Quantitative Modeling:** SQL Z-score normalization and official NUTS geographic polygon integration for GIS rendering in Looker Studio.
+            """)
+            render_pills(["BigQuery", "Python", "Cloud Build", "GitHub CI/CD", "Looker Studio", "GIS"])
+
+            st.markdown("#### TripMillennium — React & Offline-First Logistics")
+            st.markdown("""
+            * **Product Requirement:** Field logistics users required uninterrupted data access in low-connectivity areas without hitting API quota bottlenecks.
+            * **Frontend & Edge Caching:** Modular web application built in React.js, TypeScript, and Tailwind CSS, consuming relational data via Google Edge Network with local browser parsing (PapaParse) for offline-first resilience.
+            * **Asynchronous Storage:** Webhook microservices decoding base64 payloads into Object Storage with automated relational URL injection.
+            """)
+            render_pills(["React.js", "TypeScript", "Tailwind CSS", "REST APIs", "Webhooks", "Offline-First"])
+
+        with col_p2:
+            st.markdown("#### Inventory & Nutrition — Hybrid AI & Data Governance")
+            st.markdown("""
+            * **Product Requirement:** Replace fragile exact-match spreadsheet lookups with automated semantic reconciliation while preventing database corruption.
+            * **Serverless & NLP:** Microservices on GCP Cloud Run combining multimodal OCR (Gemini 1.5 Flash) and Vector Embeddings (`gemini-embedding-001`) with Cosine Similarity calculations.
+            * **Trust Funnel Governance:** Multi-stage validation workflow where the LLM acts as a binary arbiter for intermediate confidence thresholds (65%–82%) before committing records.
+            """)
+            render_pills(["GCP Cloud Run", "Vertex AI", "Gemini 1.5", "Vector Embeddings", "Cosine Similarity"])
+
+            st.markdown("#### Poke-Prices — Analytical Modeling & Tactical RAG")
+            st.markdown("""
+            * **Data Modeling:** Galaxy Schema architecture in BigQuery enforcing idempotency and deduplication through analytical window functions (`ROW_NUMBER`).
+            * **Applied RAG:** Retrieval-Augmented Generation engine intersecting qualitative market reports with quantitative pricing time-series via Gemini 1.5 Flash.
+            """)
+            render_pills(["BigQuery", "Galaxy Schema", "Window Functions", "RAG", "Gemini API"])
+
     else:
-        st.subheader("Arquiteto Independente | Startup MVPs (2025 - Presente)")
-        st.markdown("#### 🏛️ Polanyi Lakehouse (Arquitetura & CI/CD)\n* **Medallion Architecture:** Lakehouse físico no BigQuery para centralização de dados socioeconómicos.\n* **CI/CD & FinOps:** Pipelines automatizados via Cloud Build com testes de Data Quality e auditoria FinOps.\n* **Data Science:** Modelação quantitativa via Z-scores em SQL para renderização GIS no Looker Studio.")
-        st.markdown("#### 🧠 Inventário & Nutrição (IA Híbrida & NLP)\n* **Serverless GCP:** Cloud Run com microsserviços ativados por webhooks.\n* **Vector Embeddings:** Substituiu VLOOKUP por IA Híbrida (Gemini 1.5) e Similaridade de Cosseno.\n* **Governança:** Funil de Confiança onde o LLM atua como árbitro para proteger a integridade do stock.")
-        st.markdown("#### 📱 TripMillennium (React & Offline-First)\n* **Frontend:** Plataforma logística em React.js, TypeScript e Tailwind CSS.\n* **Edge Caching:** Consumo via Google Edge Network. Processamento local no browser (Offline-first).\n* **BLOB Storage:** Webhooks assíncronos para PDFs/Imagens alojados como Object Storage com injeção automática de URLs na DB.")
+        st.markdown("""
+        <div class="role-header">
+            <div><span class="role-company">Independent Product & Data Consultant</span> &nbsp;|&nbsp; <span class="role-title">Technical BA & Solutions Architect (SaaS MVPs)</span></div>
+            <div class="role-date">2025 – Presente | Lisboa, PT</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.write(
+            "Especificação de produto end-to-end e arquitetura cloud em quatro MVPs funcionais, "
+            "traduzindo estrangulamentos operacionais em User Stories, Critérios de Aceitação, microsserviços serverless e pipelines automatizados."
+        )
 
-elif menu in ["Tech & AI Skills", "Skills Técnicas e IA"]:
-    st.subheader("Hybrid Skillset (Tech, Data & CX)" if lang == "🇬🇧 EN" else "Conjunto de Skills Híbrido (Tech, Dados & CX)")
-    col_radar, col_skills = st.columns([1.5, 1])
-    with col_radar:
-        categories = ['Advanced SQL / BigQuery', 'Cloud Run / AppSheet', 'React & TypeScript', 'Python, LLMs & RAG', 'BI & Analytics', 'CI/CD & FinOps']
-        fig_radar = go.Figure(go.Scatterpolar(r=[5, 4.5, 4, 4.5, 5, 4], theta=categories, fill='toself', line_color='#1e3d59'))
-        fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 5])), showlegend=False, margin=dict(t=20, b=20, l=20, r=20), height=400, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_radar, use_container_width=True)
-    with col_skills:
-        st.markdown("#### 🛠️ Tech Stack & Ecosystems")
-        st.progress(95, text="Data & DBs: Adv. SQL, BigQuery, PostgreSQL, PySpark")
-        st.progress(95, text="Cloud & Backend: GCP, Serverless, Webhooks")
-        st.progress(85, text="Frontend: React.js, TypeScript, Tailwind CSS")
-        st.progress(90, text="AI/ML: Vertex AI, Gemini 1.5, RAG, Embeddings")
-        st.progress(90, text="BI & Ops: Power BI, Looker Studio, CI/CD, Git")
-        st.markdown("#### 🎓 Education" if lang == "🇬🇧 EN" else "#### 🎓 Educação")
-        if lang == "🇬🇧 EN":
-            st.markdown("- **PG Digital Enterprise Management** (Nova IMS)\n- **MSc Management - Thesis 18/20** (ISEG UL)\n- **BSc Political Science** (ISCSP UL)")
+        col_p1, col_p2 = st.columns(2)
+        with col_p1:
+            st.markdown("#### Polanyi Lakehouse — Arquitetura Medallion & CI/CD")
+            st.markdown("""
+            * **Arquitetura:** Data Lakehouse físico no Google BigQuery (camadas Bronze, Silver, Gold) para centralização de dados socioeconómicos (Eurostat/Banco Mundial) processados em Python.
+            * **CI/CD & FinOps:** Pipelines automatizados via Google Cloud Build ativados por webhooks do GitHub, com testes de Data Quality e auditoria de custos de computação.
+            * **Modelação Quantitativa:** Normalização via Z-scores em SQL e integração de polígonos geográficos oficiais (NUTS) para visualização GIS no Looker Studio.
+            """)
+            render_pills(["BigQuery", "Python", "Cloud Build", "GitHub CI/CD", "Looker Studio", "GIS"])
+
+            st.markdown("#### TripMillennium — Logística React & Offline-First")
+            st.markdown("""
+            * **Requisito de Produto:** Equipas no terreno necessitavam de acesso contínuo a dados em zonas sem rede sem esgotar quotas de API.
+            * **Frontend & Edge Caching:** Aplicação modular em React.js, TypeScript e Tailwind CSS, consumindo dados via Google Edge Network com processamento local no browser (PapaParse) para resiliência offline-first.
+            * **Storage Assíncrono:** Microsserviços via webhooks para descodificar payloads base64 em Object Storage com injeção automática de URLs na base de dados.
+            """)
+            render_pills(["React.js", "TypeScript", "Tailwind CSS", "REST APIs", "Webhooks", "Offline-First"])
+
+        with col_p2:
+            st.markdown("#### Inventário & Nutrição — IA Híbrida & Governança")
+            st.markdown("""
+            * **Requisito de Produto:** Substituir procuras exatas frágeis por reconciliação semântica automatizada sem comprometer a integridade relacional do stock.
+            * **Serverless & NLP:** Microsserviços em GCP Cloud Run combinando OCR multimodal (Gemini 1.5 Flash) e Vector Embeddings (`gemini-embedding-001`) com Similaridade de Cosseno.
+            * **Funil de Confiança:** Workflow de validação onde o LLM atua como árbitro binário em limiares intermédios (65%–82%) antes da consolidação na base de dados.
+            """)
+            render_pills(["GCP Cloud Run", "Vertex AI", "Gemini 1.5", "Vector Embeddings", "Cosine Similarity"])
+
+            st.markdown("#### Poke-Prices — Modelação Analítica & RAG Tático")
+            st.markdown("""
+            * **Modelação de Dados:** Arquitetura Galaxy Schema no BigQuery garantindo idempotência e desduplicação via funções de janela analítica (`ROW_NUMBER`).
+            * **RAG Aplicado:** Motor de Retrieval-Augmented Generation que cruza relatórios qualitativos com séries temporais quantitativas através do Gemini 1.5 Flash.
+            """)
+            render_pills(["BigQuery", "Galaxy Schema", "Window Functions", "RAG", "Gemini API"])
+
+# ==============================================================================
+# TAB 4: TECHNICAL STACK & EDUCATION
+# ==============================================================================
+elif menu in ["Technical Stack", "Stack Tecnológico"]:
+    col_left, col_right = st.columns([1.2, 1])
+
+    with col_left:
+        if lang == "EN":
+            st.markdown("#### Core Competencies & Technical Stack")
+            st.markdown("**1. Business Analysis & Product Delivery**")
+            render_pills([
+                "Requirements Gathering", "User Stories", "Acceptance Criteria",
+                "As-Is / To-Be Process Mapping", "Functional Specifications",
+                "Backlog Refinement", "UAT & Data Reconciliation", "Agile / Scrum",
+                "Confluence", "Jira / Azure DevOps"
+            ])
+
+            st.markdown("**2. Data Architecture & Enterprise Analytics**")
+            render_pills([
+                "Advanced SQL (PostgreSQL, T-SQL, KQL)", "Google BigQuery",
+                "Microsoft Fabric", "Azure Data Factory", "Power BI", "Apache Superset",
+                "Looker Studio", "Data Marts (SSOT)", "Medallion Architecture",
+                "Erwin Data Modeler", "PySpark", "Voice of Customer (VoC) KPIs"
+            ])
+
+            st.markdown("**3. Cloud, APIs, Enterprise Systems & AI**")
+            render_pills([
+                "REST APIs", "Webhooks", "GCP Cloud Run", "Cloud Build (CI/CD)",
+                "SAP (Data Extraction)", "Genesys / Avaya", "Salesforce / CRM",
+                "Vertex AI / Gemini", "RAG Pipelines", "Vector Embeddings",
+                "Brandwatch (NLP)", "React.js", "TypeScript", "Git"
+            ])
         else:
-            st.markdown("- **PG Digital Enterprise Management** (Nova IMS)\n- **MSc Gestão - Tese 18 Val** (ISEG UL)\n- **BSc Ciência Política** (ISCSP UL)")
+            st.markdown("#### Competências Centrais & Stack Tecnológico")
+            st.markdown("**1. Business Analysis & Entrega de Produto**")
+            render_pills([
+                "Levantamento de Requisitos", "User Stories", "Critérios de Aceitação",
+                "Mapeamento As-Is / To-Be", "Especificações Funcionais",
+                "Backlog Refinement", "UAT & Reconciliação de Dados", "Agile / Scrum",
+                "Confluence", "Jira / Azure DevOps"
+            ])
 
-elif menu in ["Cognitive & Soft Skills", "Perfil Cognitivo & Soft Skills"]:
-    if lang == "🇬🇧 EN":
-        st.subheader("Cognitive & Operational Style")
-        st.write("A high-performance analytical perspective focused on complex problem-solving, ethical integrity, and adaptability in dynamic data environments.")
-        cat_soft = ['Systemic Thinking', 'Problem Solving', 'Immersive Hyperfocus', 'Integrity & Ethics', 'Empathy & Collaboration', 'Exponential Learning']
-        texts = ["Systemic Thinking: SSOT vision and 360º conceptual architecture", "Problem Solving: Pattern recognition in complex data", "Immersive Hyperfocus: High delivery rate on high-value technical topics", "Integrity & Ethics: Leadership by example and strong team loyalty", "Empathy & Collaboration: Assertive communication and trusted relationships", "Exponential Learning: Rapid absorption of new technologies"]
+            st.markdown("**2. Arquitetura de Dados & Enterprise Analytics**")
+            render_pills([
+                "Advanced SQL (PostgreSQL, T-SQL, KQL)", "Google BigQuery",
+                "Microsoft Fabric", "Azure Data Factory", "Power BI", "Apache Superset",
+                "Looker Studio", "Data Marts (SSOT)", "Medallion Architecture",
+                "Erwin Data Modeler", "PySpark", "KPIs Voice of Customer (VoC)"
+            ])
+
+            st.markdown("**3. Cloud, APIs, Sistemas Empresariais & IA**")
+            render_pills([
+                "REST APIs", "Webhooks", "GCP Cloud Run", "Cloud Build (CI/CD)",
+                "SAP (Extração)", "Genesys / Avaya", "Salesforce / CRM",
+                "Vertex AI / Gemini", "Pipelines RAG", "Vector Embeddings",
+                "Brandwatch (NLP)", "React.js", "TypeScript", "Git"
+            ])
+
+    with col_right:
+        st.markdown("#### Domain Distribution")
+        categories = [
+            'SQL & Data Modeling (SSOT)',
+            'Business Analysis & Requirements',
+            'BI & Executive Reporting',
+            'Cloud & APIs (GCP/Azure)',
+            'Applied AI & NLP (RAG)',
+            'Frontend (React/TS)'
+        ]
+        fig = go.Figure(go.Scatterpolar(
+            r=[5.0, 4.8, 5.0, 4.5, 4.5, 4.0],
+            theta=categories,
+            fill='toself',
+            fillcolor='rgba(2, 132, 199, 0.15)',
+            line=dict(color='#0f172a', width=2)
+        ))
+        fig.update_layout(
+            polar=dict(
+                radialaxis=dict(visible=True, range=[0, 5], tickfont=dict(size=10, color='#64748b')),
+                angularaxis=dict(tickfont=dict(size=11, color='#0f172a'))
+            ),
+            showlegend=False,
+            margin=dict(t=30, b=30, l=40, r=40),
+            height=320,
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        st.markdown("#### Academic Background")
+        if lang == "EN":
+            st.markdown("""
+            * **Post-Graduate Degree in Digital Enterprise Management** — *Nova IMS*
+            * **MSc in Management (Thesis Grade: 18/20)** — *ISEG, University of Lisbon*
+            * **BSc in Political Science** — *ISCSP, University of Lisbon*
+            """)
+        else:
+            st.markdown("""
+            * **Pós-Graduação em Digital Enterprise Management** — *Nova IMS*
+            * **Mestrado em Gestão (Tese: 18/20)** — *ISEG, Universidade de Lisboa*
+            * **Licenciatura em Ciência Política** — *ISCSP, Universidade de Lisboa*
+            """)
+
+# ==============================================================================
+# TAB 5: OPERATIONAL STYLE & METHODOLOGY
+# ==============================================================================
+elif menu in ["Operational Style", "Estilo Operacional"]:
+    if lang == "EN":
+        st.markdown("#### Operational Methodology & Team Dynamics")
+        st.write(
+            "How I approach ambiguous problems, structure requirements across teams, and ensure technical delivery aligns with business reality."
+        )
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">1. Strategic Anchoring & Discovery</div>
+                <div class="info-card-body">
+                Every initiative starts with rigorous As-Is mapping and structured stakeholder questioning. 
+                Before writing a single line of SQL or defining a feature, I validate data provenance, edge cases, 
+                and the exact operational metric the solution must move.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">2. Systemic Vision (360º Architecture)</div>
+                <div class="info-card-body">
+                I do not treat tickets in isolation. Whether integrating SAP billing with Genesys telemetry or refactoring 
+                ETL pipelines, I map upstream dependencies and downstream reporting impacts to build genuine Single Sources of Truth.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with c2:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">3. Cross-Functional Translation</div>
+                <div class="info-card-body">
+                Fluency in both executive P&L discussions and engineering codebases eliminates translation friction. 
+                I write functional documentation and acceptance criteria that engineers trust and business stakeholders clearly understand.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">4. Ownership & Change Management</div>
+                <div class="info-card-body">
+                A data product or SaaS feature only succeeds when adopted. I pair technical delivery with clear documentation, 
+                feature walkthroughs, and frontline training to ensure teams transition smoothly away from legacy workflows.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     else:
-        st.subheader("Perfil Cognitivo & Estilo Operacional")
-        st.write("Uma perspetiva analítica de alto desempenho focada na resolução de problemas complexos, integridade ética e adaptabilidade em ambientes de dados dinâmicos.")
-        cat_soft = ['Pensamento Sistémico', 'Resolução de Problemas', 'Superfoco Imersivo', 'Integridade & Ética', 'Empatia & Colaboração', 'Aprendizagem Exponencial']
-        texts = ["Pensamento Sistémico: Visão SSOT e arquitetura conceptual 360º", "Resolução de Problemas: Reconhecimento de padrões em dados complexos", "Superfoco Imersivo: Elevada taxa de entrega em temas de alto valor técnico", "Integridade & Ética: Liderança pelo exemplo e forte lealdade à equipa", "Empatia & Colaboração: Comunicação assertiva e relações de confiança", "Aprendizagem Exponencial: Velocidade de absorção rápida de novas tecnologias"]
-
-    col_radar_soft, col_skills_soft = st.columns([1.5, 1])
-    with col_radar_soft:
-        fig_radar_soft = go.Figure(go.Scatterpolar(r=[5.0, 4.8, 4.7, 5.0, 4.5, 4.9], theta=cat_soft, fill='toself', line_color='#1e3d59'))
-        fig_radar_soft.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 5])), showlegend=False, margin=dict(t=20, b=20, l=20, r=20), height=400, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_radar_soft, use_container_width=True)
-    
-    with col_skills_soft:
-        st.markdown(f"#### 🧠 Soft Power & Cognitive Fit")
-        scores = [98, 95, 95, 100, 90, 95]
-        for t, s in zip(texts, scores):
-            st.progress(s, text=t)
-            
-    st.divider()
-    
-    col_style1, col_style2 = st.columns(2)
-    with col_style1:
-        if lang == "🇬🇧 EN":
-            st.markdown("#### ⚙️ Operational Dynamics (How I Work)")
-            st.markdown("* **Strategic Anchoring Phase:** Begins with rigorous mapping and structured questioning to ensure solid foundations.\n* **Multifocal Dynamism:** High performance when managing 2 to 3 simultaneous projects.\n* **Flow Protection:** Benefits from consolidated time blocks for complex context switching.")
-        else:
-            st.markdown("#### ⚙️ Dinâmica Operacional (Como Trabalho)")
-            st.markdown("* **Fase de Ancoragem Estratégica:** Início marcado por um mapeamento rigoroso e questionamento estruturado para garantir que as bases são sólidas.\n* **Dinamismo Multifocal:** Elevado desempenho ao gerir 2 a 3 projetos em simultâneo.\n* **Proteção do Fluxo:** Beneficia de blocos de tempo consolidados para transições de contexto complexas.")
-    with col_style2:
-        if lang == "🇬🇧 EN":
-            st.markdown("#### 🤝 Collaboration & Leadership")
-            st.markdown("* **Leadership by Example:** Authority earned through competence and moral integrity.\n* **High-Impact Selective Communication:** Conveys complex knowledge with enthusiasm and conceptual clarity.\n* **Growth Philosophy:** Aligned with the maxim that 'when one grows, everyone grows'.")
-        else:
-            st.markdown("#### 🤝 Colaboração & Liderança")
-            st.markdown("* **Liderança pelo Exemplo:** Autoridade conquistada através da competência e integridade moral.\n* **Comunicação Seletiva de Alto Impacto:** Transmite conhecimentos complexos com entusiasmo e clareza conceptual.\n* **Filosofia do Crescimento:** Alinhamento com a máxima de que 'onde um cresce, crescem todos'.")
+        st.markdown("#### Metodologia Operacional & Dinâmica de Equipa")
+        st.write(
+            "Como abordo problemas complexos, estruturo requisitos entre equipas e garanto que a execução técnica responde à realidade do negócio."
+        )
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">1. Ancoragem Estratégica & Discovery</div>
+                <div class="info-card-body">
+                Cada iniciativa começa com um mapeamento rigoroso As-Is e questionamento estruturado aos stakeholders. 
+                Antes de escrever SQL ou especificar uma funcionalidade, valido a proveniência dos dados, os edge cases 
+                e a métrica operacional exata que a solução tem de mover.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">2. Visão Sistémica (Arquitetura 360º)</div>
+                <div class="info-card-body">
+                Não trato pedidos de forma isolada. Seja a integrar faturação SAP com telemetria Genesys ou a refatorar 
+                pipelines de ETL, mapeio as dependências a montante e o impacto a jusante para construir verdadeiras Single Sources of Truth.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with c2:
+            st.markdown("""
+            <div class="info-card">
+                <div class="info-card-title">3. Tradução Cross-Functional</div>
+                <div class="info-card-body">
+                A fluência tanto em discussões executivas de P&L como em bases de código elimina o atrito entre equipas. 
+                Produzo documentação funcional e critérios de aceitação em que a engenharia confia e que o negócio compreende.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">4. Ownership & Change Management</div>
+                <div class="info-card-body">
+                Um produto de dados ou funcionalidade SaaS só tem sucesso quando é adotado. Acompanho a entrega técnica com 
+                documentação clara, demos e formação às equipas para garantir a transição efetiva de processos legados.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
