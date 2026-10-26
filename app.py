@@ -322,88 +322,94 @@ if menu in ["Executive Summary", "Resumo Executivo"]:
     if lang == "EN":
         st.markdown("#### Core Value Proposition")
         st.write(
-            "I operate at the intersection of Data Engineering (Cloud/ETL) and Product/Business Analysis. "
-            "Unlike purely functional analysts or isolated backend engineers, I audit legacy business logic directly in SQL, "
-            "define functional requirements with stakeholders, and architect the underlying data models and APIs."
+            "I work at the practical intersection of business operations and data engineering. "
+            "Rather than writing theoretical specifications in isolation or coding without business context, "
+            "I sit with frontline teams to map broken processes, audit the underlying SQL logic directly, "
+            "and deliver data models and product specs that solve real operational bottlenecks."
         )
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("""
             <div class="info-card">
-                <div class="info-card-title">Business Analysis & Product Delivery</div>
+                <div class="info-card-title">Translating Bottlenecks into Working Systems</div>
                 <div class="info-card-body">
-                Translation of business, regulatory, and operational bottlenecks into clear functional specifications, 
-                User Stories, As-Is/To-Be workflows, and Acceptance Criteria. Proven track record in Backlog Refinement, 
-                UAT, data reconciliation, and cross-functional alignment across Engineering, Product, and C-Level teams.
+                Instead of producing abstract documentation, I map operational workflows (As-Is/To-Be) alongside business teams 
+                and validate edge cases directly in the database. This translates into clear functional specs, User Stories, 
+                and Acceptance Criteria that cut engineering rework and helped operational teams reduce sales errors from 30% to &lt;7%.
                 </div>
             </div>
             <div class="info-card">
-                <div class="info-card-title">Enterprise Data Architecture (SSOT)</div>
+                <div class="info-card-title">Legacy Refactoring & Single Source of Truth</div>
                 <div class="info-card-body">
-                Specialist in refactoring high-volume legacy systems (SQL/PostgreSQL), preparing migration roadmaps to 
-                Microsoft Fabric/Azure, and designing centralized Data Marts that eliminate departmental silos ("Excel Hell").
+                I turn fragmented spreadsheets ("Excel Hell") and slow legacy databases into reliable Data Marts used by 400+ people daily. 
+                In high-volume regulated environments (€70M+/yr), restructuring 5,000+ lines of SQL reduced ETL processing from 24 hours 
+                to 15 minutes and cut annual maintenance effort by 75%.
                 </div>
             </div>
             """, unsafe_allow_html=True)
         with col2:
             st.markdown("""
             <div class="info-card">
-                <div class="info-card-title">CX Operations & Financial Impact</div>
+                <div class="info-card-title">Connecting Operations to the P&L</div>
                 <div class="info-card-body">
-                Integration of contact center telemetry (Genesys, Avaya) with core ERP/billing systems (SAP, OCP). 
-                Application of Cost-to-Serve and root-cause analysis (including SEM modeling) to connect operational 
-                performance directly to national P&L margins.
+                I integrate customer support telemetry (Genesys/Avaya) with core ERP and billing systems (SAP/OCP) so leadership can see 
+                where operational friction hurts financial margins. Giving teams visibility into Cost-to-Serve and root causes directly 
+                supported the recovery of Omnichannel SLAs from &lt;9% to &gt;90%.
                 </div>
             </div>
             <div class="info-card">
-                <div class="info-card-title">Modern Cloud, APIs & Applied AI</div>
+                <div class="info-card-title">Pragmatic Cloud, APIs & Applied AI</div>
                 <div class="info-card-body">
-                Hands-on architecture across GCP (BigQuery, Cloud Run, Cloud Build), REST APIs, Webhooks, and React/TypeScript. 
-                Pragmatic implementation of RAG pipelines and LLM validation (Vertex AI/Gemini) focused on data integrity and ROI.
+                Technology only matters if it solves a problem without inflating budgets. I design serverless APIs (GCP Cloud Run), 
+                automated CI/CD pipelines, and targeted AI validation steps (RAG/LLMs) that replace fragile manual lookups, 
+                automate data reconciliation, and protect database integrity.
                 </div>
             </div>
             """, unsafe_allow_html=True)
     else:
         st.markdown("#### Proposta de Valor Central")
         st.write(
-            "Atuo na interseção entre a Engenharia de Dados (Cloud/ETL) e a Análise de Negócio e Produto. "
-            "Ao contrário de analistas puramente funcionais ou engenheiros isolados do negócio, audito a lógica legada diretamente em SQL, "
-            "defino os requisitos funcionais com os stakeholders e desenho a arquitetura de dados e APIs que suporta o produto."
+            "Atuo na interseção prática entre operações de negócio e engenharia de dados. "
+            "Em vez de escrever especificações teóricas isoladas ou programar sem contexto de negócio, "
+            "sento-me com as equipas operacionais para mapear processos, audito a lógica em SQL diretamente na base de dados "
+            "e entrego modelos de dados e requisitos de produto que resolvem estrangulamentos reais."
         )
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("""
             <div class="info-card">
-                <div class="info-card-title">Business Analysis & Entrega de Produto</div>
+                <div class="info-card-title">Traduzir Estrangulamentos em Sistemas Funcionais</div>
                 <div class="info-card-body">
-                Tradução de estrangulamentos operacionais, de negócio e regulatórios em especificações funcionais claras, 
-                User Stories, mapeamento de processos As-Is/To-Be e Critérios de Aceitação. Experiência sólida em Backlog Refinement, 
-                UAT, reconciliação de dados e alinhamento entre Engenharia, Produto e C-Level.
+                Em vez de documentação abstrata, mapeio processos operacionais (As-Is/To-Be) no terreno e valido os edge cases 
+                diretamente nos dados. Isto resulta em especificações funcionais, User Stories e Critérios de Aceitação claros 
+                que reduzem retrabalho na engenharia e ajudaram as equipas a baixar erros de vendas de 30% para &lt;7%.
                 </div>
             </div>
             <div class="info-card">
-                <div class="info-card-title">Arquitetura de Dados Empresarial (SSOT)</div>
+                <div class="info-card-title">Refactoring Legado & Single Source of Truth</div>
                 <div class="info-card-body">
-                Especialista em refactoring de sistemas legados de elevado volume (SQL/PostgreSQL), preparação de roadmaps 
-                de migração para Microsoft Fabric/Azure e criação de Data Marts centralizados que erradicam silos operacionais.
+                Transformo folhas de cálculo dispersas ("Excel Hell") e bases de dados lentas em Data Marts fiáveis usados por 400+ pessoas por dia. 
+                Em ambientes regulados de alto volume (€70M+/ano), a reestruturação de +5.000 linhas de SQL baixou o processamento ETL de 24 horas 
+                para 15 minutos e cortou o esforço anual de manutenção em 75%.
                 </div>
             </div>
             """, unsafe_allow_html=True)
         with col2:
             st.markdown("""
             <div class="info-card">
-                <div class="info-card-title">Operações CX & Impacto no P&L</div>
+                <div class="info-card-title">Ligar a Operação ao P&L</div>
                 <div class="info-card-body">
-                Integração de telemetria de contact center (Genesys, Avaya) com sistemas core de faturação/ERP (SAP, OCP). 
-                Aplicação de análises Cost-to-Serve e root-cause analysis (incluindo modelação SEM) para ligar a qualidade 
-                operacional às margens financeiras.
+                Integro telemetria de suporte ao cliente (Genesys/Avaya) com sistemas de faturação e ERP (SAP/OCP) para mostrar à gestão 
+                onde as falhas operacionais afetam a margem. Dar visibilidade real sobre Cost-to-Serve e causas-raiz suportou diretamente 
+                a subida do SLA Omnichannel de &lt;9% para &gt;90%.
                 </div>
             </div>
             <div class="info-card">
-                <div class="info-card-title">Cloud Moderna, APIs & IA Aplicada</div>
+                <div class="info-card-title">Cloud, APIs & IA Aplicada com Pragmatismo</div>
                 <div class="info-card-body">
-                Arquitetura prática em GCP (BigQuery, Cloud Run, Cloud Build), REST APIs, Webhooks e React/TypeScript. 
-                Implementação pragmática de pipelines RAG e validação por LLMs (Vertex AI/Gemini) focada em integridade de dados e ROI.
+                A tecnologia só faz sentido se resolver um problema sem inflacionar custos. Desenho APIs serverless (GCP Cloud Run), 
+                pipelines CI/CD automatizados e validações cirúrgicas por IA (RAG/LLMs) que substituem procuras manuais frágeis, 
+                automatizam a reconciliação de dados e protegem a integridade da base de dados.
                 </div>
             </div>
             """, unsafe_allow_html=True)
