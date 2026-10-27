@@ -31,6 +31,12 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     background-color: rgba(11, 15, 25, 0.85) !important;
 }
 
+/* Reduce default top padding of the main container so everything fits Above the Fold */
+.block-container {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2rem !important;
+}
+
 /* Ensure all standard markdown paragraphs and lists are bright and readable */
 p, li, span, div {
     color: #e2e8f0;
@@ -46,8 +52,8 @@ h1 {
     font-weight: 700 !important;
     letter-spacing: -0.03em !important;
     color: #ffffff !important;
-    font-size: 2.25rem !important;
-    margin-bottom: 0.35rem !important;
+    font-size: 2.1rem !important;
+    margin-bottom: 0.25rem !important;
 }
 h2, h3 {
     font-weight: 600 !important;
@@ -58,67 +64,73 @@ h4 {
     font-weight: 600 !important;
     color: #ffffff !important;
     font-size: 1.2rem !important;
-    margin-top: 0.8rem !important;
-    margin-bottom: 0.5rem !important;
+    margin-top: 0.6rem !important;
+    margin-bottom: 0.4rem !important;
 }
 
 /* Hero Subtitle - High Contrast Light Slate */
 .hero-subtitle {
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: #cbd5e1 !important;
-    line-height: 1.65;
-    margin-bottom: 1.2rem;
+    line-height: 1.55;
+    margin-bottom: 0.9rem;
     max-width: 980px;
 }
 
-/* Personal Story Callout Box */
+/* Personal Story Callout Box - Compacted */
 .story-box {
     background-color: rgba(22, 31, 48, 0.75);
     border: 1px solid #283548;
     border-left: 3px solid #38bdf8;
     border-radius: 6px;
-    padding: 14px 18px;
-    margin-bottom: 1.6rem;
+    padding: 11px 16px;
+    margin-bottom: 1rem;
     max-width: 980px;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     color: #cbd5e1 !important;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 .story-title {
     color: #ffffff !important;
     font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
+    font-size: 0.92rem;
+    margin-bottom: 4px;
     display: block;
 }
 
-/* Executive KPI Cards - Dark Slate Surface */
+/* Compact & Sharp Executive KPI Cards */
 .kpi-card {
-    background: #161f30;
+    background: linear-gradient(180deg, #161f30 0%, #111827 100%);
     border: 1px solid #283548;
-    border-radius: 8px;
-    padding: 18px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    height: 100%;
+    border-top: 2px solid #38bdf8;
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .kpi-label {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
     color: #94a3b8 !important;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 .kpi-value {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: #ffffff !important;
-    margin: 6px 0 4px 0;
+    margin: 0px 0px 3px 0px;
     letter-spacing: -0.02em;
+    line-height: 1.15;
 }
 .kpi-context {
-    font-size: 0.8rem;
+    font-size: 0.74rem;
     color: #38bdf8 !important;
     font-weight: 500;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Role & Experience Headers */
@@ -330,10 +342,10 @@ if lang == "EN":
         </div>
     """, unsafe_allow_html=True)
     kpis = [
-        ("Transaction Scale", "€70M+ / yr", "Regulated Pharma & Banking Ecosystems"),
-        ("ETL Refactoring", "24h → 15m", "75% Reduction in Maintenance Effort"),
-        ("Omnichannel SLA", "<9% → >90%", "Enabled via SSOT & Workflow Design"),
-        ("Enterprise Adoption", "250+ Users", "Daily Active Power BI & SAP Data Marts"),
+        ("Transaction Scale", "€70M+ / yr", "Regulated Pharma & Banking"),
+        ("ETL Refactoring", "24h → 15m", "75% Less Maintenance Effort"),
+        ("Omnichannel SLA", "<9% → >90%", "Enabled via SSOT & Workflows"),
+        ("Enterprise Adoption", "250+ Users", "Daily Active Power BI & SAP"),
     ]
     nav_options = ["Executive Summary", "Corporate Experience", "Recent Projects & R&D", "Technical Stack", "Operational Style"]
 else:
@@ -351,10 +363,10 @@ else:
         </div>
     """, unsafe_allow_html=True)
     kpis = [
-        ("Escala Transacional", "€70M+ / ano", "Ecossistemas Regulados (Banca & Farma)"),
-        ("Refactoring de ETL", "24h → 15m", "Redução de 75% no Esforço de Manutenção"),
-        ("SLA Omnicanal", "<9% → >90%", "Viabilizado via SSOT & Desenho de Processos"),
-        ("Adoção na Empresa", "250+ Utilizadores", "Ativos Diariamente em Data Marts SSOT"),
+        ("Escala Transacional", "€70M+ / ano", "Ecossistemas Banca & Farma"),
+        ("Refactoring de ETL", "24h → 15m", "-75% Esforço de Manutenção"),
+        ("SLA Omnicanal", "<9% → >90%", "Via SSOT & Novos Processos"),
+        ("Adoção na Empresa", "250+ Utilizadores", "Ativos Diariamente em SSOT"),
     ]
     nav_options = ["Resumo Executivo", "Experiência Corporativa", "Projetos Recentes & I&D", "Stack Tecnológico", "Estilo Operacional"]
 
@@ -370,7 +382,7 @@ for col, (label, val, ctx) in zip(cols, kpis):
         </div>
         """, unsafe_allow_html=True)
 
-st.write("")
+st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
 # 6. NAVIGATION MENU
 menu = option_menu(
@@ -380,13 +392,14 @@ menu = option_menu(
     default_index=0,
     orientation="horizontal",
     styles={
-        "container": {"padding": "5px", "background-color": "#161f30", "border": "1px solid #283548", "border-radius": "8px"},
-        "icon": {"font-size": "14px", "color": "#94a3b8"},
+        "container": {"padding": "4px", "background-color": "#161f30", "border": "1px solid #283548", "border-radius": "8px"},
+        "icon": {"font-size": "13px", "color": "#94a3b8"},
         "nav-link": {
-            "font-size": "13.5px",
+            "font-size": "13px",
             "font-weight": "500",
             "text-align": "center",
             "margin": "0px 2px",
+            "padding": "8px 10px",
             "border-radius": "6px",
             "color": "#cbd5e1",
             "--hover-color": "#1e293b"
@@ -395,7 +408,7 @@ menu = option_menu(
     }
 )
 
-st.write("")
+st.markdown("<div style='margin-top: 8px;'></div>", unsafe_allow_html=True)
 
 # ==============================================================================
 # TAB 1: EXECUTIVE SUMMARY
